@@ -1,0 +1,89 @@
+/* Option button - for quiz answers */
+.option-button {
+  width: 100%;
+  text-align: left;
+  padding: 1.2rem 1.5rem;
+  font-size: 1.1rem;
+  background-color: #ffffff08;
+  border: 2px solid #ffffff11;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.option-button:hover {
+  border-color: #337f9bd5;
+  background-color: #64cbff1a;
+}
+
+.option-button.selected {
+  border-color: #12a6dca6;
+}
+
+.option-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.option-button.correct {
+  background-color: #0e5428;
+  color: white;
+}
+
+.option-button.wrong {
+  background-color: #600d0d62;
+  color: white;
+}
+
+.primary-button {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background-color: #12a6dca6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.primary-button:hover {
+  background-color: #12a6dcc3;
+}
+
+.primary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ghost-button {
+  padding: 0.8rem 1.5rem;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: transparent;
+  color: #f6fbfccc;
+  border: 2px solid #12a6dca6;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.ghost-button:hover {
+  background-color: #64cbff1a;
+  color: white;
+}
+
+.ghost-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #ebefefcf;
+}
+
+.ghost-button:disabled:hover {
+  transform: none;
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.15);
+}

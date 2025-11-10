@@ -1,0 +1,35 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 500px;
+  margin: 2rem 0;
+}
+
+label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.5rem;
+  }
+
+input[type="email"] {
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  border: 2px solid #64cbff1a;
+  border-radius: 8px;
+  background-color: #ffffff11;
+  color: inherit;
+  font-family: inherit;
+  transition: border-color 0.25s ease;
+}
+
+input[type="email"]:focus {
+  outline: none;
+  border-color: #ffffff11;
+  background-color: rgba(100, 183, 255, 0.05);
+}
+
+input[type="email"]::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}

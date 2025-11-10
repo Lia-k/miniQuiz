@@ -1,0 +1,63 @@
+.score-summary {
+  text-align: center;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  border-radius: 12px;
+  background: #ffffff08;
+  border: 2px solid #ffffff11;
+}
+
+.score-summary h3 {
+  margin: 0 0 1rem;
+  font-size: 1.8rem;
+  color: #f8fafc;
+}
+
+.score-result {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+.score-summary p {
+  margin: 0.3rem 0;
+  opacity: 0.8;
+}
+
+.results-list {
+  margin-top: 2rem;
+  background-color: hsla(0, 0%, 100%, 0.031);
+  border: 2px solid #ffffff11;
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.results-list h2 {
+  margin-top: 0;
+}
+
+.result-item:not(:last-child) {
+  border-bottom: 1px solid #ffffff11;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.result-item h3 {
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+.answers-container {
+  background-color: #600d0d62;
+  color: white;
+  padding: 1.2rem 1.5rem;
+  border-radius: 8px;
+  border: 2px solid #532a2a;
+}
+
+.answers-container.correct {
+  background-color: #0e5428;
+  border-color: #2f573e;
+  color: white;
+}
+
