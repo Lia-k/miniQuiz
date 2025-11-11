@@ -1,21 +1,23 @@
 # MiniQuiz
 
-MiniQuiz is a tiny React quiz app built with Vite. It presents a sequence of multiple‑choice questions, collects an email after the last question, and shows a summary with your score.
+MiniQuiz is a mini React quiz app built with Vite. It presents a sequence of multiple-choice questions, collects an email after the last question, and shows a summary with your score.
 
-Key behavior: once you select an option, the UI immediately highlights the correct answer and marks a wrong selection, then you can proceed with Next.
+Key behavior: once you select an option, the UI immediately highlights the correct answer, marks a wrong selection, and locks the choices so the click is final before moving on.
 
 ## Features
 
 - Minimal quiz flow: Questions → Email → Results
 - Immediate visual feedback on option select
+- Answer lock after each selection to avoid accidental double changes
+- Progress persistence via `localStorage`
 - Score summary with correct count and percentage
-- Clean state management via React context + reducer
 
 ## Tech Stack
 
 - React 18
 - Vite
-- Context + Reducer for state handling
+- React hooks for state handling
+- `localStorage` for persistence
 
 ## Getting Started
 
@@ -36,40 +38,32 @@ Preview production build:
 
 ## Project Structure
 
-- `src/App.jsx` — Top‑level app wiring and step routing
-- `src/context/` — Context providers and hooks
-- `src/reducers/miniQuizReducer.js` — Reducer and actions
+- `src/App.jsx` — Top-level app wiring, step routing, state, and persistence
 - `src/data/questions.js` — Question data
 - `src/sections/Questions.jsx` — Question UI and option selection
 - `src/sections/Email.jsx` — Email capture form
 - `src/sections/Results.jsx` — Results summary
 - `src/components/ui/button.jsx` — Button component and styles
 
-## State & Actions
+## State & Flow
 
-Reducer: `src/reducers/miniQuizReducer.js`
+`src/App.jsx` uses `useState` to track:
+- `step`: `"question" | "email" | "result"`
+- `questionIndex`
+- `selectedOption`
+- `results` map keyed by question id
+- `email`
 
-- `SELECT_OPTION` — Stores the currently selected option id for the active question.
-- `NEXT` — Persists the result for the current question, moves to the next question or to the email step at the end.
-- `SET_EMAIL` — Updates the email field.
-- `SUBMIT_EMAIL` — Moves to the results step.
-
-State shape (high‑level):
-- `currentQuestionIndex: number`
-- `currentSelectedOption: string | null`
-- `results: Record<questionId, { selectedOptionId: string; isCorrect: boolean }>`
-- `email: string`
-- `step: "question" | "email" | "result"`
-- `questions: Array<Question>`
+Every change is saved to `localStorage`, so reloading the page restores progress. Selecting an option immediately records the result for the current question and enables the Next button.
 
 ## Option Select Highlighting
 
 File: `src/sections/Questions.jsx`
 
 - When a user selects an option, the UI immediately:
-  - Disables all options to lock the answer.
   - Highlights the correct option with the `correct` style.
-  - If the selected option is wrong, marks the selected one with the `wrong` style.
+  - Marks a wrong selection with the `wrong` style.
+  - Disables all buttons to lock in the answer until “Next” is clicked.
 - The Next button becomes enabled once an option is selected.
 
 Related styles: `src/components/ui/button.css`
@@ -85,5 +79,5 @@ Edit `src/data/questions.js` to change, add, or remove questions. Each option re
 
 ## Notes
 
-- The reducer records results on `NEXT` so scoring and the summary are based on the final selection for each question.
-- If you want to persist the result immediately on select, you can extend `SELECT_OPTION` to compute `isCorrect` and write to `results` at selection time.
+- `handleOptionClick` in `src/App.jsx` records correctness immediately, so the results screen always reflects the last locked-in choice.
+- `handleNextButtonClick` clears `selectedOption` and advances the quiz or transitions to the email step when the last question is complete.

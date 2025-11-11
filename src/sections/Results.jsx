@@ -7,6 +7,7 @@ const Results = ({
   questions,
   results,
 }) => {
+  console.log(results)
   const totalQuestions = questions.length;
   const correctAnswers = Object.values(results).filter(
     (r) => r.isCorrect
@@ -16,8 +17,6 @@ const Results = ({
   const scoreLabel =
     scorePercent === 100
       ? "Perfect score 🤩"
-      : scorePercent >= 70
-      ? "Great job 👏"
       : scorePercent >= 50
       ? "Almost there 🏃‍♂️"
       : "Keep practicing 💪";
