@@ -10,7 +10,7 @@ const Email = ({
   return (
     <section className="container">
       <h2>{headerText}</h2>
-      <form onSubmit={handleSubmit} className='form'>
+      <form onSubmit={(e) => {handleSubmit(e)}} className='form'>
         <label htmlFor="email-input">Please, provide your email</label>
         <input
           id='email-input'

@@ -7,21 +7,25 @@ const Questions = ({
   subHeadingText = "Answer the question below:",
   question,
   handleOptionClick,
-  currentSelectedOption,
+  selectedOption,
   handleNextButtonClick,
-  results,
+  questionNumber,
+  totalQuestions,
 }) => {
   return (
     <section className="container">
       <h1>{headerText}</h1>
-      <p>{subHeadingText}</p>
-      <p className="question-text">{question.questionText}</p>
+      <p>
+        {subHeadingText} ({questionNumber}/{totalQuestions})
+      </p>
+      <p className="question-text">
+        {questionNumber}. {question.questionText}
+      </p>
       <div className="question-options">
         {question.options.map((option) => {
-          const isSelected = currentSelectedOption === option.id;
-          const hasChecked = results[question.id];
-          const isCorrect = hasChecked && option.isCorrect;
-          const isWrong = hasChecked && isSelected && !option.isCorrect;
+          const isSelected = selectedOption === option.id;
+          const isCorrect = selectedOption && option.isCorrect;
+          const isWrong = selectedOption && isSelected && !option.isCorrect;
           return (
             <div key={option.id}>
               <Button
@@ -31,7 +35,7 @@ const Questions = ({
                   correct: isCorrect,
                   wrong: isWrong,
                 })}
-                disabled={hasChecked}
+                disabled={selectedOption}
               >
                 {option.optionText}
               </Button>
@@ -43,7 +47,7 @@ const Questions = ({
         <Button
           className="ghost-button"
           onClick={handleNextButtonClick}
-          disabled={!currentSelectedOption}
+          disabled={!selectedOption}
         >
           Next
         </Button>
