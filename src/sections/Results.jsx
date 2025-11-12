@@ -7,7 +7,6 @@ const Results = ({
   questions,
   results,
 }) => {
-  console.log(results)
   const totalQuestions = questions.length;
   const correctAnswers = Object.values(results).filter(
     (r) => r.isCorrect

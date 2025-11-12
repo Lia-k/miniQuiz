@@ -86,7 +86,6 @@ function App() {
           question={currentQuestion}
           handleOptionClick={handleOptionClick}
           selectedOption={selectedOption}
-          results={results}
           handleNextButtonClick={handleNextButtonClick}
           questionNumber={questionNumber}
           totalQuestions={totalQuestions}
