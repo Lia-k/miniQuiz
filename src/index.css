@@ -4,8 +4,6 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,24 +14,104 @@
 h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-top: 0;
   color: #f8fafc;
 }
 
-h1, h2 {
-  color: #f8fafc;
+h1,
+h2,
+h3 {
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
+h1,
+h2 {
+  color: #f5f7ff;
+  margin: 1rem auto;
+}
+
+p,
+button,
+ul,
+ol {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
 p {
   font-size: 1rem;
   line-height: 1.6;
   margin: 0;
   margin-bottom: 1rem;
   opacity: 0.8;
+  color: #e0e4f2;
 }
 
-.container {
-  max-width: 36rem;
-  margin: 0 auto;
-  padding: 1rem;
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Core gradient */
+  background: radial-gradient(
+    circle at top left,
+    #1d2738 0,
+    #05070f 55%,
+    #000000 100%
+  );
+  color: #f4f4f4;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Inter", sans-serif;
+}
+
+.quiz-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+@supports (view-transition-name: slide) {
+  .quiz-shell {
+    view-transition-name: slide;
+    overflow: clip;
+  }
+
+  ::view-transition-group(slide) {
+    animation-duration: 250ms;
+  }
+
+  ::view-transition-old(slide),
+  ::view-transition-new(slide) {
+    mix-blend-mode: normal;
+    background: transparent;
+  }
+
+  ::view-transition-old(slide) {
+    animation: quiz-slide-out 150ms ease-in forwards;
+  }
+
+  ::view-transition-new(slide) {
+    animation: quiz-slide-in 400ms ease-out forwards;
+  }
+
+  @keyframes quiz-slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes quiz-slide-out {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+  }
 }

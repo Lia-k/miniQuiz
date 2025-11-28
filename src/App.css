@@ -4,3 +4,18 @@
   padding: 2rem;
   text-align: center;
 }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Core gradient */
+  background:
+    radial-gradient(circle at top left, #1d2738 0, #05070f 55%, #000000 100%);
+  color: #f4f4f4;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Inter", sans-serif;
+}

@@ -1,23 +1,21 @@
 # MiniQuiz
 
-MiniQuiz is a mini React quiz app built with Vite. It presents a sequence of multiple-choice questions, collects an email after the last question, and shows a summary with your score.
-
-Key behavior: once you select an option, the UI immediately highlights the correct answer, marks a wrong selection, and locks the choices so the click is final before moving on.
+MiniQuiz is a Vite + React single-page quiz about screen-life balance. It asks 15 weighted multiple-choice questions, collects an email after the final question, and shows a scored summary with category feedback.
 
 ## Features
 
-- Minimal quiz flow: Questions → Email → Results
-- Immediate visual feedback on option select
-- Answer lock after each selection to avoid accidental double changes
-- Progress persistence via `localStorage`
-- Score summary with correct count and percentage
+- Flow: Questions → Email capture → Results
+- Weighted scoring (0–150) with descriptive ranges (e.g., Digital Zen Master, Burnout Risk)
+- Category breakdown cards with thresholds and tailored feedback
+- Progress saved in `localStorage` and restored on reload
+- View Transitions API for smoother step changes (with graceful fallback)
 
 ## Tech Stack
 
-- React 18
+- React 19
 - Vite
-- React hooks for state handling
-- `localStorage` for persistence
+- classnames for conditional classes
+- Local storage for persistence
 
 ## Getting Started
 
@@ -38,46 +36,29 @@ Preview production build:
 
 ## Project Structure
 
-- `src/App.jsx` — Top-level app wiring, step routing, state, and persistence
-- `src/data/questions.js` — Question data
-- `src/sections/Questions.jsx` — Question UI and option selection
-- `src/sections/Email.jsx` — Email capture form
-- `src/sections/Results.jsx` — Results summary
-- `src/components/ui/button.jsx` — Button component and styles
+- `src/App.jsx` — Orchestrates steps, quiz state, scoring, and persistence
+- `src/components/Question.jsx` — Question UI with selectable options and navigation
+- `src/components/Email.jsx` — Email capture form (step 2 of 3)
+- `src/components/Results.jsx` — Score label, total, email echo, and category cards
+- `src/components/ui/QuizSection.jsx` — Shared layout shell used across steps
+- `src/data/questions.js` — Question copy, categories, and weighted options
+- `src/data/results.js` — Score ranges and category metadata (thresholds, feedback)
+- `src/utils` — Helpers for scoring, hydration (`loadSavedData`), and view transitions
 
-## State & Flow
+## How the flow works
 
-`src/App.jsx` uses `useState` to track:
-- `step`: `"question" | "email" | "result"`
-- `questionIndex`
-- `selectedOption`
-- `results` map keyed by question id
-- `email`
+- State in `App.jsx`: `step`, `questionIndex`, `selectedOption`, `results`, `email`.
+- Selecting an option stores `{ selectedOptionId, value, category }` for the current question and enables Continue. You can change the selection before continuing.
+- After the last question, clicking Continue moves to the email step; submitting the form shows results.
+- Results show:
+  - A labeled status based on `scoreRanges` (see `src/data/results.js`)
+  - Total score vs. computed max (from `calculateMaxScore`)
+  - Entered email
+  - Category cards with percentage-to-threshold and feedback text
+- Retake resets state and clears the `miniQuiz` key in `localStorage`.
 
-Every change is saved to `localStorage`, so reloading the page restores progress. Selecting an option immediately records the result for the current question and enables the Next button.
+## Customization
 
-## Option Select Highlighting
-
-File: `src/sections/Questions.jsx`
-
-- When a user selects an option, the UI immediately:
-  - Highlights the correct option with the `correct` style.
-  - Marks a wrong selection with the `wrong` style.
-  - Disables all buttons to lock in the answer until “Next” is clicked.
-- The Next button becomes enabled once an option is selected.
-
-Related styles: `src/components/ui/button.css`
-- `.option-button.correct` — correct highlight
-- `.option-button.wrong` — wrong highlight
-
-## Customizing Questions
-
-Edit `src/data/questions.js` to change, add, or remove questions. Each option requires:
-- `id: string`
-- `optionText: string`
-- `isCorrect: boolean`
-
-## Notes
-
-- `handleOptionClick` in `src/App.jsx` records correctness immediately, so the results screen always reflects the last locked-in choice.
-- `handleNextButtonClick` clears `selectedOption` and advances the quiz or transitions to the email step when the last question is complete.
+- Add or edit questions in `src/data/questions.js` (each option needs `id`, `optionText`, and `value`).
+- Adjust score ranges or category thresholds/feedback in `src/data/results.js`.
+- Update styling in component-level CSS files (e.g., `src/components/question.css`, `src/components/ui/button.css`).

@@ -1,33 +1,33 @@
 import { useEffect, useState } from "react";
-import Questions from "./sections/Questions";
-import Email from "./sections/Email";
-import Results from "./sections/Results";
+import Question from "./components/Question";
+import Email from "./components/Email";
+import Results from "./components/Results";
 import { questions } from "./data/questions";
+import loadSavedData from "./utils/loadSavedData";
+import { scoreRanges, categories } from "./data/results";
+import {
+  calculateMaxScore,
+  calculateTotalScore,
+  findScoreRange,
+  calculateCategoryScores,
+  getCategoriesThreshold,
+} from "./utils/calculateScore";
+import runViewTransition from "./utils/runViewTransition";
 
 function App() {
-  const [step, setStep] = useState("question");
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [results, setResults] = useState({}); // 'q1': {selectedOptionId: 'anchor', isCorrect: true},
-  const [email, setEmail] = useState("");
-  const [hasLoaded, setHasLoaded] = useState(false);
+  const [savedData] = useState(loadSavedData);
+  const [step, setStep] = useState(() => savedData.step ?? "question");
+  const [questionIndex, setQuestionIndex] = useState(
+    () => savedData.questionIndex ?? 0
+  );
+  const [selectedOption, setSelectedOption] = useState(
+    () => savedData.selectedOption ?? null
+  );
+  const [results, setResults] = useState(() => savedData.results ?? {}); // {q1: {selectedOptionId: "q1-opt1", value: 10}}
+  const [email, setEmail] = useState(() => savedData.email ?? "");
 
   useEffect(() => {
-    const savedData = localStorage.getItem("miniQuiz");
-
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      setStep(parsedData.step ?? "question");
-      setQuestionIndex(parsedData.questionIndex ?? 0);
-      setSelectedOption(parsedData.selectedOption ?? null);
-      setResults(parsedData.results ?? {});
-      setEmail(parsedData.email ?? "");
-    }
-    setHasLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hasLoaded) return;
+    if (typeof window === "undefined") return;
     const data = {
       step,
       questionIndex,
@@ -36,24 +36,27 @@ function App() {
       email,
     };
 
-    localStorage.setItem("miniQuiz", JSON.stringify(data));
-  }, [step, questionIndex, selectedOption, results, email, hasLoaded]);
-
-  if (!hasLoaded) {
-    return null;
-  }
+    try {
+      window.localStorage.setItem("miniQuiz", JSON.stringify(data));
+    } catch (error) {
+      console.error("Oops, something went wrong!", error);
+    }
+  }, [step, questionIndex, selectedOption, results, email]);
 
   const currentQuestion = questions[questionIndex];
   const questionNumber = questionIndex + 1;
-  const totalQuestions = questions.length;
+
+  const maxScore = calculateMaxScore(questions);
 
   const handleNextButtonClick = () => {
-    if (questionIndex < questions.length - 1) {
-      setQuestionIndex((prev) => prev + 1);
-    } else {
-      setStep("email");
-    }
-    setSelectedOption(null);
+    runViewTransition(() => {
+      if (questionIndex < questions.length - 1) {
+        setQuestionIndex((prev) => prev + 1);
+      } else {
+        setStep("email");
+      }
+      setSelectedOption(null);
+    });
   };
 
   const handleOptionClick = (id) => {
@@ -65,7 +68,8 @@ function App() {
       ...prev,
       [currentQuestion.id]: {
         selectedOptionId: id,
-        isCorrect: option.isCorrect,
+        value: option.value,
+        category: currentQuestion.category,
       },
     }));
   };
@@ -76,19 +80,44 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setStep("result");
+    runViewTransition(() => setStep("result"));
   };
 
+  const handleRetakeQuiz = () => {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("miniQuiz");
+    }
+    runViewTransition(() => {
+      setStep("question");
+      setQuestionIndex(0);
+      setSelectedOption(null);
+      setResults({});
+      setEmail("");
+    });
+  };
+
+  const scoreResult = calculateTotalScore(results);
+
+  const scoreRange = findScoreRange(scoreRanges, scoreResult);
+
+  const categoryScores = calculateCategoryScores(results);
+
+  const categoriesThreshold = getCategoriesThreshold(
+    categories,
+    categoryScores
+  );
+
+  const categoriesForDisplay = Object.values(categoriesThreshold);
+
   return (
-    <>
+    <main data-step={step}>
       {step === "question" && (
-        <Questions
+        <Question
           question={currentQuestion}
           handleOptionClick={handleOptionClick}
           selectedOption={selectedOption}
           handleNextButtonClick={handleNextButtonClick}
           questionNumber={questionNumber}
-          totalQuestions={totalQuestions}
         />
       )}
       {step === "email" && (
@@ -99,9 +128,16 @@ function App() {
         />
       )}
       {step === "result" && (
-        <Results results={results} email={email} questions={questions} />
+        <Results
+          email={email}
+          maxScore={maxScore}
+          handleRetakeQuiz={handleRetakeQuiz}
+          scoreRangeResult={scoreRange}
+          score={scoreResult}
+          categoriesForDisplay={categoriesForDisplay}
+        />
       )}
-    </>
+    </main>
   );
 }
 

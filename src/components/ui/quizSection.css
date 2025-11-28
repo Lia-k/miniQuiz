@@ -1,0 +1,42 @@
+.quiz-section {
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  border: none;
+}
+
+@media (min-width: 700px) {
+  .quiz-section {
+    padding: 2rem 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    width: 36rem;
+    margin: 3rem auto;
+  }
+}
+
+.quiz-section__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: #12a6dc1c;
+  color: #9ad8f5;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  width: fit-content;
+}
+
+.quiz-section__eyebrow {
+  margin-top: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  color: #7fa4c1;
+}
+
+.subtitle {
+  color: #9ba2bc;
+}

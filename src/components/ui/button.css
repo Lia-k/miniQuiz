@@ -9,6 +9,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.25s ease;
+  color: #e0e4f2;
 }
 
 .option-button:hover {
@@ -18,6 +19,12 @@
 
 .option-button.selected {
   border-color: #12a6dca6;
+}
+
+.option-button:focus-visible {
+  outline: 2px solid #12a6dc;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px #12a6dc33;
 }
 
 .option-button:disabled {
@@ -57,10 +64,16 @@
   transform: none;
 }
 
+.primary-button:focus-visible {
+  outline: 2px solid #12a6dc;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px #12a6dc33;
+}
+
 .ghost-button {
   padding: 0.8rem 1.5rem;
   width: 100%;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   background-color: transparent;
   color: #f6fbfccc;
@@ -86,4 +99,10 @@
   transform: none;
   background-color: transparent;
   border-color: rgba(255, 255, 255, 0.15);
+}
+
+.ghost-button:focus-visible {
+  outline: 2px solid #12a6dc;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px #12a6dc33;
 }
