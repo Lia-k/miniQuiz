@@ -10,7 +10,7 @@ const Email = ({ email, onEmailChange, handleSubmit }) => {
       badgeText="Step 2 of 3"
       headerTag="h2"
       eyebrowText="Screen Life Balance Quiz"
-      className='quiz-shell'
+      className='screen-shell'
     >
       <div className="quiz-email">
         <ul className="quiz-email__list">

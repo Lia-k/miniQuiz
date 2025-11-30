@@ -19,7 +19,7 @@ const Results = ({
       badgeText="Step 3 of 3"
       headerTag="h2"
       eyebrowText="Screen Life Balance Quiz"
-      className="quiz-shell"
+      className="screen-shell"
     >
       <div className="quiz-results">
         <div className="quiz-results__score-block">

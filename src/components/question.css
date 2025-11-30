@@ -1,6 +1,8 @@
 .quiz-question {
-  display: grid;
-  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  min-height: 618px;
 }
 
 .quiz-question__card {

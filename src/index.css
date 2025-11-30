@@ -50,7 +50,6 @@ body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
 
   /* Core gradient */
   background: radial-gradient(
@@ -112,6 +111,53 @@ body {
     to {
       opacity: 0;
       transform: translateX(-100px);
+    }
+  }
+}
+
+@supports (view-transition-name: appear) {
+  .screen-shell {
+    view-transition-name: appear;
+    overflow: clip;
+  }
+
+  ::view-transition-group(appear) {
+    animation-duration: 300ms;
+  }
+
+  ::view-transition-old(appear),
+  ::view-transition-new(appear) {
+    mix-blend-mode: normal;
+    background: transparent;
+  }
+
+  ::view-transition-old(appear) {
+    animation: screen-fade-out 150ms ease-in forwards;
+  }
+
+  ::view-transition-new(appear) {
+    animation: screen-fade-in 300ms ease-out forwards;
+  }
+
+  @keyframes screen-fade-in {
+    from {
+      opacity: 0;
+      transform: scale(1);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes screen-fade-out {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1);
     }
   }
 }
