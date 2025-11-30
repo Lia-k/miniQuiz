@@ -13,6 +13,7 @@ import {
   getCategoriesThreshold,
 } from "./utils/calculateScore";
 import runViewTransition from "./utils/runViewTransition";
+import ResultsGeneration from "./components/ResultsGeneration";
 
 function App() {
   const [savedData] = useState(loadSavedData);
@@ -42,6 +43,16 @@ function App() {
       console.error("Oops, something went wrong!", error);
     }
   }, [step, questionIndex, selectedOption, results, email]);
+
+  useEffect(() => {
+    if (step !== "generate-result") return;
+
+    const timerId = setTimeout(() => {
+      runViewTransition(() => setStep("result"));
+    }, 4000);
+
+    return () => clearTimeout(timerId);
+  }, [step]);
 
   const currentQuestion = questions[questionIndex];
   const questionNumber = questionIndex + 1;
@@ -80,7 +91,7 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    runViewTransition(() => setStep("result"));
+    runViewTransition(() => setStep("generate-result"));
   };
 
   const handleRetakeQuiz = () => {
@@ -127,6 +138,7 @@ function App() {
           handleSubmit={handleSubmit}
         />
       )}
+      {step === "generate-result" && <ResultsGeneration />}
       {step === "result" && (
         <Results
           email={email}
