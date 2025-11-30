@@ -1,7 +1,18 @@
 import classNames from "classnames";
-import Button from "../components/ui/button";
+import Button from "./ui/button";
 import QuizSection from "./ui/QuizSection";
+import type { QuestionItem } from "../types";
 import "./question.css";
+
+type OptionId = QuestionItem["options"][number]["id"];
+
+interface QuestionProps {
+  question: QuestionItem;
+  handleOptionClick: (id: OptionId) => void;
+  selectedOption: OptionId | null;
+  handleNextButtonClick: () => void;
+  questionNumber: number;
+}
 
 const Question = ({
   question,
@@ -9,7 +20,7 @@ const Question = ({
   selectedOption,
   handleNextButtonClick,
   questionNumber,
-}) => {
+}: QuestionProps) => {
   return (
     <QuizSection
       headerText="Screen Life Balance Quiz"

@@ -21,7 +21,12 @@ h1 {
 h1,
 h2,
 h3 {
-  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family:
+    "Poppins",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
 }
 
 h1,
@@ -34,7 +39,12 @@ p,
 button,
 ul,
 ol {
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
 }
 p {
   font-size: 1rem;
@@ -59,8 +69,13 @@ body {
     #000000 100%
   );
   color: #f4f4f4;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "Inter", sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "Inter",
+    sans-serif;
 }
 
 .quiz-shell {

@@ -1,5 +1,16 @@
 import "./quizSection.css";
 import classNames from "classnames";
+import type { ElementType, ReactNode } from "react";
+
+interface QuizSectionProps {
+  headerText: string;
+  subHeadingText?: string;
+  badgeText?: string;
+  eyebrowText?: string;
+  headerTag?: ElementType;
+  children: ReactNode;
+  className?: string;
+}
 
 const QuizSection = ({
   headerText = "Screen Life Balance Quiz",
@@ -9,7 +20,7 @@ const QuizSection = ({
   headerTag = "h1",
   children,
   className,
-}) => {
+}: QuizSectionProps) => {
   const HeadingLevel = headerTag;
   return (
     <section className={classNames("quiz-section", className)}>

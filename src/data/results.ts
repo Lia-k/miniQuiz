@@ -1,10 +1,12 @@
-export const scoreRanges = [
+import type { ScoreRanges, Categories } from "../types";
+
+export const scoreRanges: ScoreRanges = [
   {
     id: "zen-master",
     min: 120,
     max: 150,
     label: "Digital Zen Master",
-    status: 'good',
+    status: "good",
     description:
       "You've mastered the art of screen-life balance. Your digital habits support your wellbeing and productivity.",
   },
@@ -13,7 +15,7 @@ export const scoreRanges = [
     min: 90,
     max: 119,
     label: "Balanced Navigator",
-    status: 'good',
+    status: "good",
     description:
       "You're doing well! A few adjustments could help you feel even more in control of your digital life.",
   },
@@ -22,7 +24,7 @@ export const scoreRanges = [
     min: 60,
     max: 89,
     label: "Work in Progress",
-    status: 'normal',
+    status: "normal",
     description:
       "You're aware of the challenges but struggling to maintain boundaries. Small changes can make a big difference.",
   },
@@ -31,7 +33,7 @@ export const scoreRanges = [
     min: 30,
     max: 59,
     label: "Digital Overload",
-    status: 'bad',
+    status: "bad",
     description:
       "Your screens may be controlling you more than you control them. It's time to reclaim your time and attention.",
   },
@@ -40,13 +42,13 @@ export const scoreRanges = [
     min: 0,
     max: 29,
     label: "Burnout Risk",
-    status: 'bad',
+    status: "bad",
     description:
       "Your digital habits need urgent attention. The good news? Every change you make will have immediate impact.",
   },
 ];
 
-export const categories = {
+export const categories: Categories = {
   "Screen Time Management": {
     id: "screen-time",
     questionIds: ["q1", "q2", "q3"],

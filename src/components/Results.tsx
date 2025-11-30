@@ -1,8 +1,24 @@
-import Button from "../components/ui/button";
+import Button from "./ui/button";
 import QuizSection from "./ui/QuizSection";
 import { categories } from "../data/results";
-import "./results.css";
+import type { ScoreRange } from "../types";
 import classNames from "classnames";
+import "./results.css";
+
+interface CategoryResultForDisplay {
+  category: keyof typeof categories;
+  threshold: number;
+  feedback: string;
+}
+
+interface ResultsProps {
+  scoreRangeResult: ScoreRange;
+  maxScore: number;
+  email: string;
+  handleRetakeQuiz: () => void;
+  score: number;
+  categoriesForDisplay: CategoryResultForDisplay[];
+}
 
 const Results = ({
   scoreRangeResult,
@@ -11,7 +27,7 @@ const Results = ({
   handleRetakeQuiz,
   score,
   categoriesForDisplay,
-}) => {
+}: ResultsProps) => {
   return (
     <QuizSection
       headerText="Your Screen-Life Balance results are ready"

@@ -1,3 +1,10 @@
+import { categories } from "./results";
+import type { Questions } from "../types";
+
+type QuestionWithCategory = Omit<Questions[number], "category"> & {
+  category: keyof typeof categories;
+};
+
 export const questions = [
   {
     id: "q1",
@@ -290,4 +297,4 @@ export const questions = [
       },
     ],
   },
-];
+] satisfies QuestionWithCategory[];

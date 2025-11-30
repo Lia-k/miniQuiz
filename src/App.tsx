@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
+import type { FormEvent } from "react";
 import Question from "./components/Question";
 import Email from "./components/Email";
 import Results from "./components/Results";
 import { questions } from "./data/questions";
 import loadSavedData from "./utils/loadSavedData";
 import { scoreRanges, categories } from "./data/results";
+import type {
+  CategoryThresholdResult,
+  Questions,
+  Results as QuizResults,
+} from "./types";
 import {
   calculateMaxScore,
   calculateTotalScore,
@@ -15,17 +21,33 @@ import {
 import runViewTransition from "./utils/runViewTransition";
 import ResultsGeneration from "./components/ResultsGeneration";
 
+type Step = "question" | "email" | "generate-result" | "result";
+type OptionId = Questions[number]["options"][number]["id"];
+type SavedData = Partial<{
+  step: Step;
+  questionIndex: number;
+  selectedOption: OptionId | null;
+  results: QuizResults;
+  email: string;
+}>;
+type CategoryName = keyof typeof categories;
+type CategoryForDisplay = Omit<CategoryThresholdResult, "category"> & {
+  category: CategoryName;
+};
+
 function App() {
-  const [savedData] = useState(loadSavedData);
-  const [step, setStep] = useState(() => savedData.step ?? "question");
-  const [questionIndex, setQuestionIndex] = useState(
-    () => savedData.questionIndex ?? 0
+  const [savedData] = useState<SavedData>(loadSavedData);
+  const [step, setStep] = useState<Step>(() => savedData.step ?? "question");
+  const [questionIndex, setQuestionIndex] = useState<number>(
+    () => savedData.questionIndex ?? 0,
   );
-  const [selectedOption, setSelectedOption] = useState(
-    () => savedData.selectedOption ?? null
+  const [selectedOption, setSelectedOption] = useState<OptionId | null>(
+    () => savedData.selectedOption ?? null,
   );
-  const [results, setResults] = useState(() => savedData.results ?? {}); // {q1: {selectedOptionId: "q1-opt1", value: 10}}
-  const [email, setEmail] = useState(() => savedData.email ?? "");
+  const [results, setResults] = useState<QuizResults>(
+    () => savedData.results ?? {},
+  ); // {q1: {selectedOptionId: "q1-opt1", value: 10}}
+  const [email, setEmail] = useState<string>(() => savedData.email ?? "");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -70,10 +92,11 @@ function App() {
     });
   };
 
-  const handleOptionClick = (id) => {
+  const handleOptionClick = (id: OptionId) => {
     setSelectedOption(id);
 
     const option = currentQuestion.options.find((item) => item.id === id);
+    if (!option) return;
 
     setResults((prev) => ({
       ...prev,
@@ -85,12 +108,12 @@ function App() {
     }));
   };
 
-  const onEmailChange = (value) => {
+  const onEmailChange = (value: string) => {
     setEmail(value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     runViewTransition(() => setStep("generate-result"));
   };
 
@@ -109,16 +132,21 @@ function App() {
 
   const scoreResult = calculateTotalScore(results);
 
-  const scoreRange = findScoreRange(scoreRanges, scoreResult);
+  const scoreRange = findScoreRange(scoreRanges, scoreResult)!;
 
   const categoryScores = calculateCategoryScores(results);
 
   const categoriesThreshold = getCategoriesThreshold(
     categories,
-    categoryScores
+    categoryScores,
   );
 
-  const categoriesForDisplay = Object.values(categoriesThreshold);
+  const categoriesForDisplay: CategoryForDisplay[] = Object.entries(
+    categoriesThreshold,
+  ).map(([categoryKey, categoryResult]) => ({
+    ...categoryResult,
+    category: categoryKey as CategoryName,
+  }));
 
   return (
     <main data-step={step}>
